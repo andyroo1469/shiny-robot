@@ -25,12 +25,13 @@ public class CalendarApp extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        // Center: Calendar panel (must be created before taskInputPanel for proper initialization)
+        calendarPanel = new CalendarPanel(this);
+
         // Top left: Task input panel
         taskInputPanel = new TaskInputPanel(this);
         mainPanel.add(taskInputPanel, BorderLayout.WEST);
 
-        // Center: Calendar panel
-        calendarPanel = new CalendarPanel(this);
         mainPanel.add(calendarPanel, BorderLayout.CENTER);
 
         // Top: Month navigation
@@ -61,9 +62,12 @@ public class CalendarApp extends JFrame {
         return navPanel;
     }
 
-    private void updateMonthLabel() {
-        monthLabel.setText(currentMonth.getMonth() + " " + currentMonth.getYear());
-        monthLabel.setFont(new Font("Arial", Font.BOLD, 16));
+    public void updateMonthLabel() {
+        if (monthLabel != null) {
+            monthLabel.setText(currentMonth.getMonth() + " " + currentMonth.getYear());
+            monthLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            monthLabel.repaint();
+        }
     }
 
     public void previousMonth() {
