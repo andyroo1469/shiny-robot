@@ -56,14 +56,38 @@ public class CalendarCellPanel extends JPanel {
             panel.add(Box.createVerticalGlue());
         } else {
             for (String task : tasksForDate) {
-                JLabel taskLabel = new JLabel(">" + task);
-                taskLabel.setFont(new Font("Arial", Font.PLAIN, 9));
-                taskLabel.setForeground(new Color(50, 100, 200));
-                panel.add(taskLabel);
+                JPanel taskRow = createTaskRow(task);
+                panel.add(taskRow);
             }
             panel.add(Box.createVerticalGlue());
         }
 
         return panel;
+    }
+
+    private JPanel createTaskRow(String task) {
+        JPanel taskRow = new JPanel(new BorderLayout(3, 0));
+        taskRow.setBackground(Color.WHITE);
+        taskRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
+
+        // Task label
+        JLabel taskLabel = new JLabel(">" + task);
+        taskLabel.setFont(new Font("Arial", Font.PLAIN, 9));
+        taskLabel.setForeground(new Color(50, 100, 200));
+        taskRow.add(taskLabel, BorderLayout.CENTER);
+
+        // Delete button
+        JButton deleteBtn = new JButton("X");
+        deleteBtn.setMargin(new Insets(0, 2, 0, 2));
+        deleteBtn.setFont(new Font("Arial", Font.PLAIN, 8));
+        deleteBtn.setPreferredSize(new Dimension(20, 16));
+        deleteBtn.setBackground(new Color(255, 100, 100));
+        deleteBtn.setForeground(Color.WHITE);
+        deleteBtn.setFocusPainted(false);
+        deleteBtn.setBorder(BorderFactory.createEmptyBorder());
+        deleteBtn.addActionListener(e -> app.removeTask(date, task));
+        taskRow.add(deleteBtn, BorderLayout.EAST);
+
+        return taskRow;
     }
 }
