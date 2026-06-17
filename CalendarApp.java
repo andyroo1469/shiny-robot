@@ -87,6 +87,17 @@ public class CalendarApp extends JFrame {
         calendarPanel.refresh();
     }
 
+    public void removeTask(LocalDate date, String task) {
+        java.util.List<String> taskList = tasks.get(date);
+        if (taskList != null) {
+            taskList.remove(task);
+            if (taskList.isEmpty()) {
+                tasks.remove(date);
+            }
+            calendarPanel.refresh();
+        }
+    }
+
     public java.util.List<String> getTasksForDate(LocalDate date) {
         return tasks.getOrDefault(date, new ArrayList<>());
     }
