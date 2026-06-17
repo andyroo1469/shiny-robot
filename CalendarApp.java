@@ -9,6 +9,7 @@ public class CalendarApp extends JFrame {
     private Map<LocalDate, java.util.List<String>> tasks;
     private CalendarPanel calendarPanel;
     private TaskInputPanel taskInputPanel;
+    private JLabel monthLabel;
 
     public CalendarApp() {
         setTitle("Calendar App");
@@ -47,8 +48,8 @@ public class CalendarApp extends JFrame {
         JButton prevButton = new JButton("< Previous");
         prevButton.addActionListener(e -> previousMonth());
 
-        JLabel monthLabel = new JLabel();
-        updateMonthLabel(monthLabel);
+        monthLabel = new JLabel();
+        updateMonthLabel();
 
         JButton nextButton = new JButton("Next >");
         nextButton.addActionListener(e -> nextMonth());
@@ -60,18 +61,20 @@ public class CalendarApp extends JFrame {
         return navPanel;
     }
 
-    private void updateMonthLabel(JLabel label) {
-        label.setText(currentMonth.getMonth() + " " + currentMonth.getYear());
-        label.setFont(new Font("Arial", Font.BOLD, 16));
+    private void updateMonthLabel() {
+        monthLabel.setText(currentMonth.getMonth() + " " + currentMonth.getYear());
+        monthLabel.setFont(new Font("Arial", Font.BOLD, 16));
     }
 
     public void previousMonth() {
         currentMonth = currentMonth.minusMonths(1);
+        updateMonthLabel();
         calendarPanel.refresh();
     }
 
     public void nextMonth() {
         currentMonth = currentMonth.plusMonths(1);
+        updateMonthLabel();
         calendarPanel.refresh();
     }
 
