@@ -55,8 +55,9 @@ public class CalendarCellPanel extends JPanel {
         if (tasksForDate.isEmpty()) {
             panel.add(Box.createVerticalGlue());
         } else {
-            for (String task : tasksForDate) {
-                JPanel taskRow = createTaskRow(task);
+            for (int i = 0; i < tasksForDate.size(); i++) {
+                String task = tasksForDate.get(i);
+                JPanel taskRow = createTaskRow(task, i);
                 panel.add(taskRow);
             }
             panel.add(Box.createVerticalGlue());
@@ -65,28 +66,36 @@ public class CalendarCellPanel extends JPanel {
         return panel;
     }
 
-    private JPanel createTaskRow(String task) {
-        JPanel taskRow = new JPanel(new BorderLayout(3, 0));
+    private JPanel createTaskRow(String task, int index) {
+        JPanel taskRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         taskRow.setBackground(Color.WHITE);
-        taskRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 20));
+        taskRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 18));
 
         // Task label
         JLabel taskLabel = new JLabel(">" + task);
-        taskLabel.setFont(new Font("Arial", Font.PLAIN, 9));
+        taskLabel.setFont(new Font("Arial", Font.PLAIN, 8));
         taskLabel.setForeground(new Color(50, 100, 200));
-        taskRow.add(taskLabel, BorderLayout.CENTER);
+        taskRow.add(taskLabel);
 
         // Delete button
         JButton deleteBtn = new JButton("X");
-        deleteBtn.setMargin(new Insets(0, 2, 0, 2));
-        deleteBtn.setFont(new Font("Arial", Font.PLAIN, 8));
-        deleteBtn.setPreferredSize(new Dimension(20, 16));
-        deleteBtn.setBackground(new Color(255, 100, 100));
+        deleteBtn.setFont(new Font("Arial", Font.BOLD, 10));
+        deleteBtn.setPreferredSize(new Dimension(18, 16));
+        deleteBtn.setMargin(new Insets(0, 0, 0, 0));
+        deleteBtn.setOpaque(true);
+        deleteBtn.setContentAreaFilled(true);
+        deleteBtn.setBackground(new Color(255, 80, 80));
         deleteBtn.setForeground(Color.WHITE);
+        deleteBtn.setBorder(BorderFactory.createRaisedBevelBorder());
         deleteBtn.setFocusPainted(false);
-        deleteBtn.setBorder(BorderFactory.createEmptyBorder());
-        deleteBtn.addActionListener(e -> app.removeTask(date, task));
-        taskRow.add(deleteBtn, BorderLayout.EAST);
+        deleteBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        final int taskIndex = index;
+        deleteBtn.addActionListener(e -> {
+            app.removeTask(date, task);
+        });
+        
+        taskRow.add(deleteBtn);
 
         return taskRow;
     }
