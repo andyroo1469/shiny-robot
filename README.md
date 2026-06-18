@@ -52,13 +52,9 @@ Individual calendar cell:
 ## Usage
 
 1. Enter a task description in the "Task" field
-2. Select or enter a date in "Date (yyyy-MM-dd)" format
+2. Select or enter a date in drop down menu
 3. Click "Add Task" to add the task to the calendar
 4. Use the Previous/Next buttons to navigate between months
 5. Tasks will appear on their respective dates in the calendar
+6. Click the red "X" next to tasks to remove them
 
-## Date Format
-
-Dates must be entered in ISO format: **yyyy-MM-dd**
-
-Example: 2026-06-17
