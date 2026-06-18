@@ -21,9 +21,9 @@ public class CalendarCellPanel extends JPanel {
         JPanel dateInfoPanel = createDateInfoPanel();
         add(dateInfoPanel, BorderLayout.NORTH);
 
-        // Tasks panel
-        JPanel tasksPanel = createTasksPanel();
-        add(tasksPanel, BorderLayout.CENTER);
+        // Tasks panel with scrolling
+        JScrollPane tasksScrollPane = createTasksScrollPane();
+        add(tasksScrollPane, BorderLayout.CENTER);
     }
 
     private JPanel createDateInfoPanel() {
@@ -45,7 +45,7 @@ public class CalendarCellPanel extends JPanel {
         return panel;
     }
 
-    private JPanel createTasksPanel() {
+    private JScrollPane createTasksScrollPane() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.WHITE);
@@ -55,19 +55,24 @@ public class CalendarCellPanel extends JPanel {
         if (tasksForDate.isEmpty()) {
             panel.add(Box.createVerticalGlue());
         } else {
-            for (int i = 0; i < tasksForDate.size(); i++) {
-                String task = tasksForDate.get(i);
-                JPanel taskRow = createTaskRow(task, i);
+            for (String task : tasksForDate) {
+                JPanel taskRow = createTaskRow(task);
                 panel.add(taskRow);
             }
             panel.add(Box.createVerticalGlue());
         }
 
-        return panel;
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        
+        return scrollPane;
     }
 
-    private JPanel createTaskRow(String task, int index) {
-        JPanel taskRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+    private JPanel createTaskRow(String task) {
+        JPanel taskRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
         taskRow.setBackground(Color.WHITE);
         taskRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 18));
 
@@ -77,10 +82,10 @@ public class CalendarCellPanel extends JPanel {
         taskLabel.setForeground(new Color(50, 100, 200));
         taskRow.add(taskLabel);
 
-        // Delete button
-        JButton deleteBtn = new JButton("X");
-        deleteBtn.setFont(new Font("Arial", Font.BOLD, 10));
-        deleteBtn.setPreferredSize(new Dimension(18, 16));
+        // Delete button (circular and small)
+        JButton deleteBtn = new JButton("×");
+        deleteBtn.setFont(new Font("Arial", Font.BOLD, 12));
+        deleteBtn.setPreferredSize(new Dimension(14, 14));
         deleteBtn.setMargin(new Insets(0, 0, 0, 0));
         deleteBtn.setOpaque(true);
         deleteBtn.setContentAreaFilled(true);
@@ -90,7 +95,6 @@ public class CalendarCellPanel extends JPanel {
         deleteBtn.setFocusPainted(false);
         deleteBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        final int taskIndex = index;
         deleteBtn.addActionListener(e -> {
             app.removeTask(date, task);
         });
